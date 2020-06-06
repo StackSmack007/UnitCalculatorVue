@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"
+        integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous" />
+    <title>Club Calculator</title>
+</head>
+
+<body>
+    <main>
+        <header>
+            <h3>Wealth Battle - Club Calculator</h3>
+        </header>
+        <div id="game">
+            <section class="content">
+                <ul>
+                    <li class="sgs">
+                        <h5>Settings:</h5>
+                        <div class="opts">
+                            <div>
+                                <input type="radio" id="time" value="time" v-model="mode">
+                                <label for="time"><i class="far fa-clock"></i> Time</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="units" value="units" v-model="mode">
+                                <label for="units"><i class="fas fa-users"></i> Units Count</label>
+                            </div>
+                        </div>
+                        <div>
+                            <img src="./resourses/jbox.png" alt="j-box">
+                            <div class="form-group">
+                                <label for="boxes">Required Boxes Count: </label>
+                                <input id="boxes" class="dec-inp-f" type="number" max="100" step="1" min="1"
+                                    v-model.lazy="boxes">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="info">
+                        <h5>Data:</h5>
+                        <img class="imp-img" src="./resourses/units.transparent.png" alt="units picture">
+                        <div class="form-group">
+
+                            <label for="units">Units Count:</label>
+                            <input class="dec-inp-f" id="units" type="number" step="1" :placeholder="unitPlaceHolder"
+                                :disabled="isTimeAsked" :class="{untouchable:isTimeAsked}" v-model.lazy="unitCount"
+                                @blur="updateTime()">
+                        </div>
+                        <div class="form-group">
+                            <label for="time">Time [hours:mins]:</label>
+                            <el-time-select class="dec-inp-f" id="time" v-model="time"
+                                :picker-options="{start: '00:00' , step: '00:15' , end: '23:45'}"
+                                :placeholder="timePlaceHolder" :disabled="!isTimeAsked" @blur="updateUnitCount()">
+                            </el-time-select>
+                        </div>
+                    </li>
+                    <li class="clock">
+                        <h5>CountDown:</h5>
+                        <img class="imp-img" src="./resourses/club.transparent.png" alt="club picture">
+                        <div v-show="hasData">
+                            <button :class="{active:countDown.isRunning}" class="btn-start" @click="turnClock()"><i
+                                    class="far fa-clock"></i></button>
+                            <ul>
+                                <li>Boxes Obtained: {{boxesObtained}}/{{boxes}}</li>
+                                <li>Time Remaining: {{minutesElapsed}}</li>
+                            </ul>
+                        </div>
+
+
+                    </li>
+                </ul>
+            </section>
+        </div>
+
+    </main>
+
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <script>
+        let clockF = null;
+        function pad(n, width, z) {
+            z = z || '0';
+            n = n + '';
+            return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+        }
+        const defaultBoxes = 100;
+        const koef = 500000;
+        let vm = new Vue({
+            name: 'demo',
+            el: '#game',
+            data() {
+                return {
+                    mode: 'time',
+                    time: '',
+                    boxes: defaultBoxes,
+                    unitCount: '',
+                    countDown: {
+                        isRunning: false,
+                        minutesElapsed: 0
+                    }
+                }
+            },
+            methods: {
+                timeFromOveralMinutes(mins) {
+                    const hours = Math.floor(mins / 60);
+                    const minutes = mins - hours * 60;
+                    return `${pad(hours, 2)}:${pad(minutes, 2)}`;
+                },
+                updateTime() {
+                    const tot_min = Math.ceil(this.boxes * koef / (this.unitCount));
+                    this.time = this.timeFromOveralMinutes(tot_min);
+                    this.stopClock();
+                },
+
+                minutesFromTime(timeStr) {
+                    const [hours, mins] = timeStr.split(":").map(x => +x);
+                    return hours * 60 + mins;
+                },
+
+                updateUnitCount() {
+                    this.unitCount = Math.ceil(this.boxes * koef / (this.overalTimeInMinutes));
+                    this.stopClock();
+                },
+
+                turnClock() {
+                    const entering = this.countDown.isRunning;
+                    this.resetClock();
+                    this.countDown.minutesElapsed = this.minutesFromTime(this.time);
+                    this.stopClock();
+                    if (!entering)
+                        this.startClock();
+                },
+
+                stopClock() {
+                    clearInterval(clockF);
+                    clockF = null;
+                },
+                startClock() {
+                    this.countDown.isRunning = true;
+                    clockF = setInterval(() => {
+                        if (this.countDown.minutesElapsed > 0)
+                            this.countDown.minutesElapsed--;
+                        else {
+                            let audio = new Audio('./resourses/alarm.mp3');
+                            audio.play();
+                            this.stopClock();
+                        }
+                    }, 1000 * 60)
+                },
+
+                resetClock() {
+                    this.countDown.isRunning = false;
+                    this.countDown.minutesElapsed = 0;
+                }
+            },
+            computed: {
+                unitPlaceHolder() {
+                    return !this.isTimeAsked ? 'Units ?...' : this.unitCount > 0 ? this.unitCount : '-'
+                },
+                timePlaceHolder() {
+                    if (typeof (this.time) === 'String') return '00:00';
+                    if (!this.isTimeAsked) return this.time;
+                    return 'Time ?...';
+                },
+                isTimeAsked() {
+                    return this.mode === 'units';
+                },
+                overalTimeInMinutes() {
+                    [hours, mins] = this.time.split(":");
+                    return hours * 60 + mins;
+                },
+                hasData() {
+                    return this.time != '' && this.time != '00:00' && this.unitCount != '';
+                },
+
+                minutesElapsed() {
+                    return this.timeFromOveralMinutes(this.countDown.minutesElapsed);
+                },
+                boxesObtained() {
+                    let completionPerc = (this.minutesFromTime(this.time) - this.countDown.minutesElapsed) /
+                        this.minutesFromTime(this.time);
+                    return Math.floor(this.boxes * completionPerc)
+                }
+            },
+            watch: {
+                boxes(newV, oldV) {
+                    if (newV > 100) { this.boxes = 100; return; }
+                    if (newV < 1) { this.boxes = 1; return; }
+                    if (!this.hasData || (oldV < 1 || oldV > 100)) return;
+                    if (this.isTimeAsked) this.unitCount = Math.ceil(this.unitCount * +newV / +oldV);
+                    else this.updateTime();
+                    this.resetClock();
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

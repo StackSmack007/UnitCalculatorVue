@@ -1,0 +1,108 @@
+@import url("reset.css");
+@import url("typography.css");
+@import url("layout.css");
+
+header>h3{
+    text-align: center ;
+}
+
+section.content>ul {
+    list-style: none;
+    display:flex;
+    flex-wrap:nowrap;
+    align-items: flex-start;
+}
+
+section.content>ul>li{
+    flex:0 1 33%;
+    padding:0 1em 1em 1em;
+}
+section.content h5{
+    text-align: center;
+}
+
+.sgs>div{
+   display:block;
+    padding:1em;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sgs>div.opts{
+    justify-content: space-around;
+}
+.sgs>div>img{
+    max-width: 40%;
+    height: auto;
+}
+.sgs>div>.form-group{
+    flex:0 0 50%;    
+}
+
+.info{
+    display:flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border:2px solid green;
+    border-top: none;
+    border-bottom: none;
+}
+.info>h5{flex:0 0 100%;}
+
+.info div.form-group{
+    flex:0 0 1em;
+    text-align: center;
+} 
+
+input.dec-inp-f,
+.dec-inp-f>input{
+    background:blanchedalmond;
+    width:auto;
+    border:none;
+    height: 1.6rem;
+    padding:0 0.5rem;
+    text-align: center;
+    border-radius: 0.25rem;
+    max-width:10rem;
+    margin:0.5rem 0;
+    font-weight: 500;
+}
+
+input.dec-inp-f::placeholder,
+.dec-inp-f>input::placeholder{
+    color:black;
+}
+
+input.untouchable{
+    cursor: not-allowed;
+    background-color: rgb(245, 247, 250);
+}
+div.el-date-editor{
+    width:100% !important;
+}
+
+img.imp-img {
+    width:100%;
+    height: auto;
+    margin-bottom: 1em;
+}
+
+li.clock>div{
+   display:flex;
+   flex-wrap: nowrap;
+   justify-content: space-evenly; 
+   align-items: center;
+}
+li.clock>div>ul{
+    list-style: none;
+}
+
+button.btn-start{
+    background:burlywood;
+    color:darkgreen;
+    border:none;
+    border-radius: 0.25em;
+    padding:0.25em 1em;
+}
+
+button.active{ color:orangered }
