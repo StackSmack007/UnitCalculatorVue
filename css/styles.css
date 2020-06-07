@@ -87,7 +87,7 @@ img.imp-img {
     margin-bottom: 1em;
 }
 
-li.clock>div{
+li.clock>div:last-child{
    display:flex;
    flex-wrap: nowrap;
    justify-content: space-evenly; 
@@ -107,11 +107,13 @@ button.btn-start{
 
 button.active{ color:orangered }
 
-.spinner{
-    color:orangered;
-    float: right;
-    text-decoration: underline;
-position: absolute;
-right:1.5em;
-text-shadow: 0px 2px 19px rgba(117, 156, 154, 1);
+.clock-headline>h5:first-child{
+float:left;
 }
+.clock-headline>h5:not(:first-child){
+    float:right;
+    color:orangered;
+    text-decoration: underline;
+    right:.5rem;
+    text-shadow: 0px 2px 19px rgba(117, 156, 154, 1);
+    }
