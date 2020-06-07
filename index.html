@@ -59,7 +59,10 @@
                         </div>
                     </li>
                     <li class="clock">
-                        <h5>CountDown:</h5>
+                        <div>
+                            <h5>CountDown:</h5>
+                            <h5 v-if="countDown.isRunning" class="spinner"> Running </h5>
+                        </div>
                         <img class="imp-img" src="./resourses/club.transparent.png" alt="club picture">
                         <div v-show="hasData">
                             <button :class="{active:countDown.isRunning}" class="btn-start" @click="turnClock()"><i
@@ -75,7 +78,6 @@
                 </ul>
             </section>
         </div>
-
     </main>
 
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
@@ -185,7 +187,8 @@
                     let completionPerc = (this.minutesFromTime(this.time) - this.countDown.minutesElapsed) /
                         this.minutesFromTime(this.time);
                     return Math.floor(this.boxes * completionPerc)
-                }
+                },
+                isRunning() { return this.countDown.isRunning }
             },
             watch: {
                 boxes(newV, oldV) {

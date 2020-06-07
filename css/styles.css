@@ -106,3 +106,12 @@ button.btn-start{
 }
 
 button.active{ color:orangered }
+
+.spinner{
+    color:orangered;
+    float: right;
+    text-decoration: underline;
+position: absolute;
+right:1.5em;
+text-shadow: 0px 2px 19px rgba(117, 156, 154, 1);
+}
