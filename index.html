@@ -173,7 +173,7 @@
                     return this.mode === 'units';
                 },
                 overalTimeInMinutes() {
-                    [hours, mins] = this.time.split(":");
+                    [hours, mins] = this.time.split(":").map(x=>Number(x));
                     return hours * 60 + mins;
                 },
                 hasData() {
@@ -187,8 +187,7 @@
                     let completionPerc = (this.minutesFromTime(this.time) - this.countDown.minutesElapsed) /
                         this.minutesFromTime(this.time);
                     return Math.floor(this.boxes * completionPerc)
-                },
-                isRunning() { return this.countDown.isRunning }
+                }
             },
             watch: {
                 boxes(newV, oldV) {
