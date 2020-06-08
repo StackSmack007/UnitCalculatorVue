@@ -59,7 +59,7 @@ input.dec-inp-f,
     background:blanchedalmond;
     width:auto;
     border:none;
-    height: 1.6rem;
+    height: 1.6rem !important;
     padding:0 0.5rem;
     text-align: center;
     border-radius: 0.25rem;
@@ -73,12 +73,10 @@ input.dec-inp-f::placeholder,
     color:black;
 }
 
-input.untouchable{
+input.disabled {
     cursor: not-allowed;
     background-color: rgb(245, 247, 250);
-}
-div.el-date-editor{
-    width:100% !important;
+    color:black;
 }
 
 img.imp-img {
@@ -110,6 +108,7 @@ button.active{ color:orangered }
 .clock-headline>h5:first-child{
 float:left;
 }
+
 .clock-headline>h5:not(:first-child){
     float:right;
     color:orangered;
