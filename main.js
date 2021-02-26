@@ -1,5 +1,5 @@
 require(["https://cdn.jsdelivr.net/npm/vue/dist/vue.js", "https://cdn.jsdelivr.net/npm/vue2-timepicker@1.1.2/dist/VueTimepicker.umd.min.js"], function (Vue, timePicker) {
-    const defaultBoxes = 100;
+    const defaultBoxes = 250;
     const koef = 500000;
     const VueTimepicker = timePicker.default;
     const unitsRangePossible = { max: 50000000, min: 34747 };
@@ -120,9 +120,9 @@ require(["https://cdn.jsdelivr.net/npm/vue/dist/vue.js", "https://cdn.jsdelivr.n
 
         watch: {
             boxes(newV, oldV) {
-                if (newV > 100) { this.boxes = 100; return; }
+                if (newV > defaultBoxes) { this.boxes = defaultBoxes; return; }
                 if (newV < 1) { this.boxes = 1; return; }
-                if (!this.hasData || (oldV < 1 || oldV > 100)) return;
+                if (!this.hasData || (oldV < 1 || oldV > defaultBoxes)) return;
                 if (this.isTimeAsked) this.unitCount = Math.ceil(this.unitCount * +newV / +oldV);
                 else this.updateTime();
                 this.resetClock();
