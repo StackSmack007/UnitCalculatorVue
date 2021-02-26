@@ -9,7 +9,7 @@ require(["https://cdn.jsdelivr.net/npm/vue/dist/vue.js", "https://cdn.jsdelivr.n
         const minutes = mins - hours * 60;
         return `${pad(hours, 2)}:${pad(minutes, 2)}`
     };
-
+ 
     const minutesFromTime = timeStr => {
         const [hours, mins] = timeStr.split(":").map(x => +x);
         return hours * 60 + mins
