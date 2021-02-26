@@ -32,7 +32,7 @@ require(["https://cdn.jsdelivr.net/npm/vue/dist/vue.js", "https://cdn.jsdelivr.n
             return {
                 mode: 'time',
                 time: '00:00',
-                boxes: defaultBoxes,
+                  boxes: defaultBoxes,
                 unitCount: '',
                 countDown: {
                     isRunning: false,
@@ -89,7 +89,7 @@ require(["https://cdn.jsdelivr.net/npm/vue/dist/vue.js", "https://cdn.jsdelivr.n
 
         computed: {
             unitPlaceHolder() { return !this.isTimeAsked ? 'Units ?...' : this.unitCount > 0 ? this.unitCount : '-' },
-
+            maxboxes() {return defaultBoxes},
             timePlaceHolder() {
                 // debugger;
                 // // if (typeof (this.time) === 'String') return '00:00';
